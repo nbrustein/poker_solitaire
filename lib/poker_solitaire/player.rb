@@ -1,0 +1,2 @@
+class PokerSolitaire::Player
+end
