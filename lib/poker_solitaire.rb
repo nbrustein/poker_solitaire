@@ -12,3 +12,4 @@ require File.expand_path("../poker_solitaire/game_state", __FILE__)
 require File.expand_path("../poker_solitaire/version", __FILE__)
 
 require File.expand_path("../poker_solitaire/players/random", __FILE__)
+require File.expand_path("../poker_solitaire/players/match_chaser", __FILE__)

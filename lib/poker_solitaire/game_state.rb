@@ -4,11 +4,12 @@ class PokerSolitaire::GameState
   
   class Position
     
-    attr_reader :row, :column, :card
+    attr_reader :game_state, :row_index, :column_index, :card
     
-    def initialize(row, column)
-      @row, @column = row, column
+    def initialize(game_state, row_index, column_index)
+      @row_index, @column_index = row_index, column_index
       @card = nil
+      @game_state = game_state
     end
     
     def place_card(card)
@@ -19,6 +20,15 @@ class PokerSolitaire::GameState
       card.nil?
     end
     
+    def cards_in(row_or_column)
+      if row_or_column == :row
+        cards = game_state.rows[row_index].map(&:card)
+      else
+        cards = game_state.columns[column_index].map(&:card)
+      end
+      cards.compact 
+    end
+    
   end
   
   def initialize
@@ -27,7 +37,7 @@ class PokerSolitaire::GameState
     0.upto(4) do |row_index|
       @rows[row_index] = []
       0.upto(4) do |column_index|
-        @rows[row_index][column_index] = Position.new(row_index, column_index)
+        @rows[row_index][column_index] = Position.new(self, row_index, column_index)
       end
     end
     
