@@ -50,6 +50,16 @@ class PokerSolitaire::GameState
     end
   end
   
+  def columns
+    cols = [[],[],[],[],[]]
+    rows.each_with_index do |row, row_index|
+      row.each_with_index do |position, column_index|
+        cols[column_index] << position
+      end
+    end
+    cols
+  end
+  
   private
   def all_positions
     # require 'pp'

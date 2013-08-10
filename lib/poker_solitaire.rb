@@ -6,6 +6,7 @@ module PokerSolitaire
 end
 
 require File.expand_path("../poker_solitaire/card_deck", __FILE__)
+require File.expand_path("../poker_solitaire/hand", __FILE__)
 require File.expand_path("../poker_solitaire/game", __FILE__)
 require File.expand_path("../poker_solitaire/game_state", __FILE__)
 require File.expand_path("../poker_solitaire/version", __FILE__)

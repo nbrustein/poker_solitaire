@@ -1,7 +1,7 @@
 class PokerSolitaire::CardDeck
   
   class Card
-    
+    include Comparable
     attr_reader :suit, :rank
     
     def initialize(suit, rank)
@@ -18,6 +18,10 @@ class PokerSolitaire::CardDeck
     
     def abbreviation
       "#{rank.abbreviation}#{suit.abbreviation}"
+    end
+    
+    def <=>(other)
+      rank <=> other.rank
     end
     
   end
@@ -51,6 +55,23 @@ class PokerSolitaire::CardDeck
         name.to_s
       else
         name.slice(0, 1).upcase
+      end
+    end
+    
+    def <=>(other)
+      to_i <=> other.to_i  
+    end
+    
+    def to_i
+      if name.is_a?(Integer)
+        name
+      else
+        {
+          JACK => 11,
+          QUEEN  => 12,
+          KING => 13,
+          ACE => 14
+        }[name]
       end
     end
     

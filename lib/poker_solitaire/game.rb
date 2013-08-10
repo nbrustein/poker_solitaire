@@ -16,8 +16,30 @@ class PokerSolitaire::Game
   end
   
   def inspect
-    state.inspect
-    "score: ??"
+    state.rows.each do |positions|
+      card_abbreviations = positions.map { |position| position.card.abbreviation}
+      score = "%02d" % PokerSolitaire::Hand.new(positions.map(&:card)).score
+      puts((card_abbreviations+[score]).join(" "))
+    end
+    puts(state.columns.map { |positions|
+      "%02d" % PokerSolitaire::Hand.new(positions.map(&:card)).score
+    }.join(" "))
+    "score: #{score}"
+  end
+  
+  def score
+    raise "Cannot determine score until game is over" unless finished?
+    return @score if defined? @score
+    score = 0
+    (state.rows + state.columns).each do |positions|
+      score += PokerSolitaire::Hand.new(positions.map(&:card)).score
+    end
+    @score = score
+  end
+  
+  private
+  def finished?
+    state.open_positions.empty?
   end
   
   private
