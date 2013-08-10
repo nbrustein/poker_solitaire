@@ -12,8 +12,12 @@ namespace :poker_solitaire do
     player = ENV['p'].constantize
     n = ENV['n']
     
-    average_score, time_elapsed = PokerSolitaire.play_n_games(player, n, 2.seconds) do |average_score, percent_complete|
-      puts "#{"%02d" % percent_complete}% complete. Average score = #{"%.2f" % average_score}"
+    last_puts = Time.now
+    average_score, time_elapsed = PokerSolitaire.play_n_games(player, n) do |game, average_score, percent_complete|
+      if Time.now - last_puts > 2.seconds
+        puts "#{"%02d" % percent_complete}% complete. Average score = #{"%.2f" % average_score}"
+        last_puts = Time.now
+      end
     end
     
     puts "played #{n} games in #{"%02f" % time_elapsed} seconds"

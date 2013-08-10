@@ -12,13 +12,12 @@ module PokerSolitaire
     game
   end
   
-  def self.play_n_games(player, n, progress_interval = 2.seconds, &on_progress)
+  def self.play_n_games(player, n, &on_progress)
     average = Proc.new do |arr|
       arr.inject{ |sum, el| sum + el }.to_f / arr.size
     end
     scores = []
     start = Time.now
-    last_progress = Time.now
     1.upto(n.to_i) do |i|
       game = PokerSolitaire::Game.new({
         'player' => player.new
@@ -26,9 +25,8 @@ module PokerSolitaire
       game.play
       scores << game.score
       
-      if block_given? && last_progress < Time.now - progress_interval
-        yield(average.call(scores), 100*i.to_f/n.to_f)
-        last_progress = Time.now
+      if block_given?
+        yield(game, average.call(scores), 100*i.to_f/n.to_f)
       end
       
     end
