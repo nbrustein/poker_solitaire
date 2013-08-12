@@ -43,18 +43,31 @@ class PokerSolitaire::Hand
     if ace_high.nil?
       return possible_straight?(true) || possible_straight?(false)
     end
+        
+    ranks = cards.map { |card| card.rank.to_i(ace_high) }
     
-    sorted = cards.sort
-    
-    0.upto(sorted.size - 2).each do |i|
-      return false unless sorted[i+1].rank.to_i(ace_high) - sorted[i].rank.to_i(ace_high) == 1
+    return false unless ranks.size == ranks.uniq.size
+    return ranks.max - ranks.min < 5
+  end
+  
+  def spaces_between_straight
+    if possible_straight?(true)
+      ranks = cards.map { |card| card.rank.to_i(true) }
+      ranks.max - ranks.min - cards.size + 1
+    elsif possible_straight?(false)
+      ranks = cards.map { |card| card.rank.to_i(false) }
+      ranks.max - ranks.min - cards.size + 1
+    else
+      nil
     end
-    
-    return true
   end
   
   def possible_flush?
     cards.map(&:suit).uniq.size == 1
+  end
+  
+  def possible_straight_flush?
+    possible_flush? && possible_straight?
   end
   
   def four_of_a_kind?
