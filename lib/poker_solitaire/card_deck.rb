@@ -62,7 +62,7 @@ class PokerSolitaire::CardDeck
       to_i <=> other.to_i  
     end
     
-    def to_i
+    def to_i(ace_high = true)
       if name.is_a?(Integer)
         name
       else
@@ -70,7 +70,7 @@ class PokerSolitaire::CardDeck
           JACK => 11,
           QUEEN  => 12,
           KING => 13,
-          ACE => 14
+          ACE => ace_high ? 14 : 1
         }[name]
       end
     end

@@ -23,4 +23,10 @@ namespace :poker_solitaire do
     puts "played #{n} games in #{"%02f" % time_elapsed} seconds"
     puts "average score: #{average_score}"
   end
+  
+  desc "train a player indicated by p=PLAYER on n=### games"
+  task :train_player do
+    player = ENV['p'].constantize
+    player.train(ENV['n'].to_i)
+  end
 end

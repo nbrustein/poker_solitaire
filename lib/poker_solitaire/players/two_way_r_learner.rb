@@ -39,14 +39,6 @@ require File.expand_path("../../player", __FILE__)
 # 4. consider interactions
 
 module PokerSolitaire::Players::TwoWayRLearner
-
-  module Train
-    
-    def self.train
-      
-    end
-      
-  end
   
   # def take_turn(state, card)
   #   position = state.open_positions.sample

@@ -1,10 +1,10 @@
 class PokerSolitaire::GameState
   
-  attr_reader :rows
+  attr_reader :rows, :columns, :rows_and_columns, :move_index
   
   class Position
     
-    attr_reader :game_state, :row_index, :column_index, :card
+    attr_reader :game_state, :row_index, :column_index, :card, :move_index
     
     def initialize(game_state, row_index, column_index)
       @row_index, @column_index = row_index, column_index
@@ -12,8 +12,9 @@ class PokerSolitaire::GameState
       @game_state = game_state
     end
     
-    def place_card(card)
+    def place_card(card, move_index)
       @card = card
+      @move_index = move_index
     end
     
     def empty?
@@ -29,17 +30,55 @@ class PokerSolitaire::GameState
       cards.compact 
     end
     
+    def row_and_column
+      [
+        game_state.rows[row_index],
+        game_state.columns[column_index]
+      ]
+    end
+    
+  end
+  
+  class RowOrColumn
+    
+    attr_reader :positions
+    
+    delegate :fetch, :<<, :[], :[]=, :each_with_index, :map, :compact, :to => :positions
+    
+    def initialize
+      @positions = []  
+    end
+    
+    def hand
+      PokerSolitaire::Hand.new(positions.map(&:card).compact)
+    end
+    
+    def history
+      state = []
+      [state.clone] + @positions.sort_by(&:move_index).map do |position|
+        state << position
+        state.clone
+      end
+    end
+    
   end
   
   def initialize
     @rows = []
+    @columns = []
+    @move_index = -1
     
     0.upto(4) do |row_index|
-      @rows[row_index] = []
+      @rows[row_index] = RowOrColumn.new
       0.upto(4) do |column_index|
-        @rows[row_index][column_index] = Position.new(self, row_index, column_index)
+        position = Position.new(self, row_index, column_index)
+        @rows[row_index][column_index] = position
+        @columns[column_index] ||= RowOrColumn.new
+        @columns[column_index][row_index] = position
       end
     end
+    
+    @rows_and_columns = @rows + @columns
     
   end
   
@@ -51,7 +90,7 @@ class PokerSolitaire::GameState
     row = @rows.fetch(row_index)
     position = row.fetch(column_index)
     raise "Non-empty position" unless position.empty?
-    position.place_card(card)
+    position.place_card(card, @move_index += 1)
   end
   
   def inspect
@@ -60,25 +99,9 @@ class PokerSolitaire::GameState
     end
   end
   
-  def columns
-    cols = [[],[],[],[],[]]
-    rows.each_with_index do |row, row_index|
-      row.each_with_index do |position, column_index|
-        cols[column_index] << position
-      end
-    end
-    cols
-  end
-  
   private
   def all_positions
-    # require 'pp'
-    # pp rows
-    # puts "************"
-    # pp rows.values
-    # puts "************"
-    # pp rows.values.map(&:values).flatten
-    rows.flatten
+    rows.map(&:positions).flatten
   end
   
 end
