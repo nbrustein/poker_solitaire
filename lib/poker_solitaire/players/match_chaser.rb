@@ -1,3 +1,5 @@
+# average score: 24 points
+
 require File.expand_path("../../player", __FILE__)
 
 class PokerSolitaire::Players::MatchChaser < PokerSolitaire::Player

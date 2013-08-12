@@ -1,3 +1,5 @@
+# average score: 8 points
+
 require File.expand_path("../../player", __FILE__)
 
 class PokerSolitaire::Players::Random < PokerSolitaire::Player

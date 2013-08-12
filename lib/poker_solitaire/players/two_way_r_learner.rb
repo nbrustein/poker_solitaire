@@ -34,7 +34,7 @@ require File.expand_path("../../player", __FILE__)
 # 1. build a reinforcement learner that takes a simplified view of the 
 #    current state of each row and column, and ignores the cards 
 #    remaining and the interactions
-# 2. consider each of the 39 possible partial hands, but ignore
+# 2. consider each of the 33 possible partial hands, but ignore
 #    cards remaining and interactions
 # 3. consider cards remaining
 # 4. consider interactions

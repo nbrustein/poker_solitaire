@@ -1,3 +1,5 @@
+# average score: 38 points
+
 require File.expand_path("../../two_way_r_learner", __FILE__)
 
 class PokerSolitaire::Players::TwoWayRLearner::AllPartialHands < PokerSolitaire::Player
